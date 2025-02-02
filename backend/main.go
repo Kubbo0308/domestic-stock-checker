@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strings"
 
 	"github.com/gocolly/colly/v2"
 )
@@ -17,13 +16,6 @@ func main() {
 
 	// 「table」タグ内の HTML を処理
 	c.OnHTML("table", func(e *colly.HTMLElement) {
-		// ここでは、テーブルの中に「収益」という文字列が含まれているテーブルを対象としています
-		if !strings.Contains(e.Text, "収益") {
-			return
-		}
-
-		fmt.Println("Found table containing '収益':")
-
 		// テーブル内の各行（tr）を処理
 		e.ForEach("tr", func(_ int, row *colly.HTMLElement) {
 			var cells []string
