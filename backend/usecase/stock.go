@@ -15,5 +15,9 @@ func NewStockUsecase(sr repository.StockRepository) StockUsecase {
 }
 
 func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, error) {
-	return "", nil
+	str, err := su.sr.FetchStockInfo(securitiesCode)
+	if err != nil {
+		return "", err
+	}
+	return str, nil
 }
