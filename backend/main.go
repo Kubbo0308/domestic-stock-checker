@@ -13,6 +13,6 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.GET("/stock/:securitiesCode", di.NewStockDI().GetStockInfo)
+	r.GET("/stock", di.NewStockDI().GetStockInfo)
 	r.Run()
 }

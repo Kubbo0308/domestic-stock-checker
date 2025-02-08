@@ -19,7 +19,7 @@ func NewStockHandler(su usecase.StockUsecase) StockHandler {
 	return &stockHandler{su: su}
 }
 func (sh *stockHandler) GetStockInfo(c *gin.Context) {
-	securitiesCode := c.Param("securitiesCode")
+	securitiesCode := c.Query("securitiesCode")
 	_, err := sh.su.GetStockInfo(securitiesCode)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
