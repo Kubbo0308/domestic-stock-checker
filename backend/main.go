@@ -1,6 +1,8 @@
 package main
 
 import (
+	"domestic-stock-checker/di"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,5 +13,6 @@ func main() {
 			"message": "pong",
 		})
 	})
+	r.GET("/stock/:securitiesCode", di.NewStockDI().GetStockInfo)
 	r.Run()
 }
