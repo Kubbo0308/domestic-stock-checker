@@ -4,6 +4,7 @@ import (
 	"domestic-stock-checker/domain/repository"
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/gocolly/colly/v2"
 )
@@ -14,29 +15,30 @@ func NewStockPersistence() repository.StockRepository {
 	return &stockPersistence{}
 }
 
-func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, error) {
+func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, []string, error) {
 	c := colly.NewCollector()
 
+	var companyName string
 	c.OnHTML("title", func(e *colly.HTMLElement) {
-		fmt.Println(e.Text)
+		companyName = e.Text
 	})
 
-	// 「table」タグ内の HTML を処理
+	// 会社業績
+	var companyPerformances []string
 	c.OnHTML("table", func(e *colly.HTMLElement) {
-		// テーブル内の各行（tr）を処理
-		e.ForEach("tr", func(_ int, row *colly.HTMLElement) {
-			var cells []string
-			// ヘッダーセル（th）を取得
-			row.ForEach("th", func(_ int, cell *colly.HTMLElement) {
-				cells = append(cells, cell.Text)
+		if strings.Contains(e.Text, "収益") {
+			// テーブル内の各行（tr）を処理
+			e.ForEach("tr", func(_ int, row *colly.HTMLElement) {
+				// ヘッダーセル（th）を取得
+				row.ForEach("th", func(_ int, cell *colly.HTMLElement) {
+					companyPerformances = append(companyPerformances, cell.Text)
+				})
+				// 通常セル（td）を取得
+				row.ForEach("td", func(_ int, cell *colly.HTMLElement) {
+					companyPerformances = append(companyPerformances, cell.Text)
+				})
 			})
-			// 通常セル（td）を取得
-			row.ForEach("td", func(_ int, cell *colly.HTMLElement) {
-				cells = append(cells, cell.Text)
-			})
-			// 行ごとにセル内容を表示
-			fmt.Println(cells)
-		})
+		}
 	})
 
 	// Before making a request print "Visiting ..."
@@ -49,6 +51,9 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, error
 		log.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
 	})
 
-	c.Visit("https://irbank.net/E04425/results")
-	return "", nil
+	err := c.Visit("https://irbank.net/E04425/results")
+	if err != nil {
+		return "", nil, err
+	}
+	return companyName, companyPerformances, nil
 }

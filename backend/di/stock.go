@@ -1,8 +1,8 @@
 package di
 
 import (
-	"domestic-stock-checker/domain/interface/handler"
 	"domestic-stock-checker/infrastructure"
+	"domestic-stock-checker/interface/handler"
 	"domestic-stock-checker/usecase"
 )
 

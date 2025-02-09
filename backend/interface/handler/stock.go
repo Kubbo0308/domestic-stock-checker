@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"domestic-stock-checker/interface/dto"
 	"domestic-stock-checker/usecase"
 	"net/http"
 
@@ -20,9 +21,11 @@ func NewStockHandler(su usecase.StockUsecase) StockHandler {
 }
 func (sh *stockHandler) GetStockInfo(c *gin.Context) {
 	securitiesCode := c.Query("securitiesCode")
-	_, err := sh.su.GetStockInfo(securitiesCode)
+	companyName, companyPerformances, err := sh.su.GetStockInfo(securitiesCode)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 	}
-	c.JSON(http.StatusOK, nil)
+
+	res := dto.TransferStockInfo(companyName, companyPerformances)
+	c.JSON(http.StatusOK, res)
 }

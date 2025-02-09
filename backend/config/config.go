@@ -1,7 +1,7 @@
 package config
 
 import (
-	"domestic-stock-checker/domain/interface/handler"
+	"domestic-stock-checker/interface/handler"
 
 	"github.com/gin-gonic/gin"
 )

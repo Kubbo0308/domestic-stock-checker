@@ -1,5 +1,5 @@
 package repository
 
 type StockRepository interface {
-	FetchStockInfo(securitiesCode string) (string, error)
+	FetchStockInfo(securitiesCode string) (string, []string, error)
 }
