@@ -5,9 +5,16 @@ import (
 	"domestic-stock-checker/utils"
 	"fmt"
 	"log"
-	"strings"
+	"time"
 
 	"github.com/gocolly/colly/v2"
+)
+
+var (
+	performanceWords   = [4]string{"収益", "ROA", "EPS", "純利益"}
+	financeWords       = [3]string{"総資産", "自己資本比率", "有利子負債"}
+	cashFlowWords      = [4]string{"営業CF", "投資CF", "財務CF", "現金等"}
+	dividendTrendWords = [3]string{"一株配当", "配当性向", "剰余金の配当"}
 )
 
 type stockPersistence struct{}
@@ -19,9 +26,36 @@ func NewStockPersistence() repository.StockRepository {
 func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, []string, []string, []string, []string, error) {
 	c := colly.NewCollector()
 
+	// レートリミットの設定: 全ドメインに対して、リクエスト間に Delay と RandomDelay を挟む
+	err := c.Limit(&colly.LimitRule{
+		DomainGlob:  "*", // すべてのドメインに適用
+		Delay:       2 * time.Second,
+		RandomDelay: 1 * time.Second, // 最大2秒のランダムな追加遅延
+	})
+	if err != nil {
+		return "", nil, nil, nil, nil, err
+	}
+
+	// リクエスト時の処理
+	c.OnRequest(func(r *colly.Request) {
+		fmt.Println("Visiting", r.URL.String())
+	})
+
+	// エラーハンドラ
+	c.OnError(func(r *colly.Response, err error) {
+		log.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+	})
+
 	var companyName string
 	c.OnHTML("title", func(e *colly.HTMLElement) {
 		companyName = e.Text
+	})
+
+	// 決算まとめページにアクセス
+	c.OnHTML("a[title='決算まとめ']", func(e *colly.HTMLElement) {
+		link := e.Attr("href")
+		fmt.Println("Found link with title:", link)
+		e.Request.Visit(link)
 	})
 
 	// 会社業績
@@ -33,28 +67,19 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, []str
 	// 配当推移
 	var dividendTrend []string
 	c.OnHTML("table", func(e *colly.HTMLElement) {
-		if strings.Contains(e.Text, "収益") {
+		if utils.Contains(e.Text, performanceWords[:]) {
 			companyPerformances = utils.GetInfoFromTable(e)
-		} else if strings.Contains(e.Text, "総資産") {
+		} else if utils.Contains(e.Text, financeWords[:]) {
 			financialStatus = utils.GetInfoFromTable(e)
-		} else if strings.Contains(e.Text, "営業CF") {
+		} else if utils.Contains(e.Text, cashFlowWords[:]) {
 			cashFlow = utils.GetInfoFromTable(e)
-		} else if strings.Contains(e.Text, "一株配当") {
+		} else if utils.Contains(e.Text, dividendTrendWords[:]) {
 			dividendTrend = utils.GetInfoFromTable(e)
 		}
 	})
 
-	// Before making a request print "Visiting ..."
-	c.OnRequest(func(r *colly.Request) {
-		fmt.Println("Visiting", r.URL.String())
-	})
-
-	// エラーハンドラ
-	c.OnError(func(r *colly.Response, err error) {
-		log.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
-	})
-
-	err := c.Visit("https://irbank.net/E04425/results")
+	companyURL := fmt.Sprintf("https://irbank.net/%s", secuririesCode)
+	err = c.Visit(companyURL)
 	if err != nil {
 		return "", nil, nil, nil, nil, err
 	}
