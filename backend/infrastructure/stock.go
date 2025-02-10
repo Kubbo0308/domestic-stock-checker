@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"domestic-stock-checker/domain/repository"
+	"domestic-stock-checker/utils"
 	"fmt"
 	"log"
 	"strings"
@@ -33,50 +34,13 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, []str
 	var dividendTrend []string
 	c.OnHTML("table", func(e *colly.HTMLElement) {
 		if strings.Contains(e.Text, "収益") {
-			// テーブル内の各行（tr）を処理
-			e.ForEach("tr", func(_ int, row *colly.HTMLElement) {
-				// ヘッダーセル（th）を取得
-				row.ForEach("th", func(_ int, cell *colly.HTMLElement) {
-					companyPerformances = append(companyPerformances, cell.Text)
-				})
-				// 通常セル（td）を取得
-				row.ForEach("td", func(_ int, cell *colly.HTMLElement) {
-					companyPerformances = append(companyPerformances, cell.Text)
-				})
-			})
+			companyPerformances = utils.GetInfoFromTable(e)
 		} else if strings.Contains(e.Text, "総資産") {
-			e.ForEach("tr", func(_ int, row *colly.HTMLElement) {
-				// ヘッダーセル（th）を取得
-				row.ForEach("th", func(_ int, cell *colly.HTMLElement) {
-					financialStatus = append(financialStatus, cell.Text)
-				})
-				// 通常セル（td）を取得
-				row.ForEach("td", func(_ int, cell *colly.HTMLElement) {
-					financialStatus = append(financialStatus, cell.Text)
-				})
-			})
+			financialStatus = utils.GetInfoFromTable(e)
 		} else if strings.Contains(e.Text, "営業CF") {
-			e.ForEach("tr", func(_ int, row *colly.HTMLElement) {
-				// ヘッダーセル（th）を取得
-				row.ForEach("th", func(_ int, cell *colly.HTMLElement) {
-					cashFlow = append(cashFlow, cell.Text)
-				})
-				// 通常セル（td）を取得
-				row.ForEach("td", func(_ int, cell *colly.HTMLElement) {
-					cashFlow = append(cashFlow, cell.Text)
-				})
-			})
+			cashFlow = utils.GetInfoFromTable(e)
 		} else if strings.Contains(e.Text, "一株配当") {
-			e.ForEach("tr", func(_ int, row *colly.HTMLElement) {
-				// ヘッダーセル（th）を取得
-				row.ForEach("th", func(_ int, cell *colly.HTMLElement) {
-					dividendTrend = append(dividendTrend, cell.Text)
-				})
-				// 通常セル（td）を取得
-				row.ForEach("td", func(_ int, cell *colly.HTMLElement) {
-					dividendTrend = append(dividendTrend, cell.Text)
-				})
-			})
+			dividendTrend = utils.GetInfoFromTable(e)
 		}
 	})
 
