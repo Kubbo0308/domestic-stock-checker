@@ -55,8 +55,11 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, []str
 	c.OnHTML("a[title='決算まとめ']", func(e *colly.HTMLElement) {
 		link := e.Attr("href")
 		fmt.Println("Found link with title:", link)
-		e.Request.Visit(link)
+		err = e.Request.Visit(link)
 	})
+	if err != nil {
+		return "", nil, nil, nil, nil, err
+	}
 
 	// 会社業績
 	var companyPerformances []string
