@@ -23,7 +23,7 @@ func NewStockPersistence() repository.StockRepository {
 	return &stockPersistence{}
 }
 
-func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, []string, []string, []string, []string, error) {
+func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, [][]string, [][]string, [][]string, [][]string, error) {
 	c := colly.NewCollector()
 
 	// レートリミットの設定: 全ドメインに対して、リクエスト間に Delay と RandomDelay を挟む
@@ -62,13 +62,13 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, []str
 	}
 
 	// 会社業績
-	var companyPerformances []string
+	var companyPerformances [][]string
 	// 財務状況
-	var financialStatus []string
+	var financialStatus [][]string
 	// キャッシュフロー
-	var cashFlow []string
+	var cashFlow [][]string
 	// 配当推移
-	var dividendTrend []string
+	var dividendTrend [][]string
 	c.OnHTML("table", func(e *colly.HTMLElement) {
 		if utils.Contains(e.Text, performanceWords[:]) {
 			companyPerformances = utils.GetInfoFromTable(e)
