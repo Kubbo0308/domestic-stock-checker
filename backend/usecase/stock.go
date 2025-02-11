@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"domestic-stock-checker/domain/repository"
+	"domestic-stock-checker/utils"
 )
 
 type StockUsecase interface {
@@ -21,5 +22,11 @@ func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, [][]string,
 	if err != nil {
 		return "", nil, nil, nil, nil, err
 	}
+
+	companyPerformances = utils.CheckLastRowAndHeader(companyPerformances)
+	financialStatus = utils.CheckLastRowAndHeader(financialStatus)
+	cashFlow = utils.CheckLastRowAndHeader(cashFlow)
+	dividendTrend = utils.CheckLastRowAndHeader(dividendTrend)
+
 	return companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, nil
 }
