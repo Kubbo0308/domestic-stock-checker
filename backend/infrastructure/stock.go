@@ -5,6 +5,7 @@ import (
 	"domestic-stock-checker/utils"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/gocolly/colly/v2"
@@ -87,4 +88,34 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, [][]s
 		return "", nil, nil, nil, nil, err
 	}
 	return companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, nil
+}
+
+func (sp *stockPersistence) CheckEPS(companyPerformances [][]string) *int {
+	score := 0
+	epsIndex := utils.FindIndex[string](companyPerformances[0], "EPS")
+	if epsIndex == -1 {
+		return nil
+	}
+
+	for index, row := range companyPerformances {
+		if index < 2 {
+			continue
+		}
+		prevScore, err := strconv.ParseFloat(companyPerformances[index-1][epsIndex], 64)
+		if err != nil {
+			continue
+		}
+		nowScore, err := strconv.ParseFloat(row[epsIndex], 64)
+		if err != nil {
+			continue
+		}
+
+		if nowScore >= prevScore {
+			score++
+		} else {
+			score--
+		}
+	}
+
+	return &score
 }

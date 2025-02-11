@@ -6,4 +6,5 @@ type StockInfo struct {
 	FinancialStatus     [][]string
 	CashFlow            [][]string
 	DividendTrend       [][]string
+	EPSScore            *int
 }

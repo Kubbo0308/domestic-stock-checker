@@ -21,11 +21,11 @@ func NewStockHandler(su usecase.StockUsecase) StockHandler {
 }
 func (sh *stockHandler) GetStockInfo(c *gin.Context) {
 	securitiesCode := c.Query("securitiesCode")
-	companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, err := sh.su.GetStockInfo(securitiesCode)
+	companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, epsScore, err := sh.su.GetStockInfo(securitiesCode)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 	}
 
-	res := dto.TransferStockInfo(companyName, companyPerformances, financialStatus, cashFlow, dividendTrend)
+	res := dto.TransferStockInfo(companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, epsScore)
 	c.JSON(http.StatusOK, res)
 }

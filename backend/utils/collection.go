@@ -11,3 +11,13 @@ func Contains(word string, targetWords []string) bool {
 
 	return false
 }
+
+func FindIndex[T comparable](slice []T, target T) int {
+	for index, value := range slice {
+		if value == target {
+			return index
+		}
+	}
+
+	return -1
+}

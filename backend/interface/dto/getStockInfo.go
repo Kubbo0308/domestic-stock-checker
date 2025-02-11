@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func TransferStockInfo(companyName string, companyPerformances [][]string, financialStatus [][]string, cashFlow [][]string, dividendTrend [][]string) model.StockInfo {
+func TransferStockInfo(companyName string, companyPerformances [][]string, financialStatus [][]string, cashFlow [][]string, dividendTrend [][]string, epsScore *int) model.StockInfo {
 	companyNameTitle := strings.Split(companyName, " ")
 	return model.StockInfo{
 		CompanyName:         companyNameTitle[1],
@@ -13,5 +13,6 @@ func TransferStockInfo(companyName string, companyPerformances [][]string, finan
 		FinancialStatus:     financialStatus,
 		CashFlow:            cashFlow,
 		DividendTrend:       dividendTrend,
+		EPSScore:            epsScore,
 	}
 }
