@@ -6,7 +6,7 @@ import (
 )
 
 type StockUsecase interface {
-	GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, *int, error)
+	GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, *float64, error)
 }
 
 type stockUsecase struct {
@@ -17,7 +17,7 @@ func NewStockUsecase(sr repository.StockRepository) StockUsecase {
 	return &stockUsecase{sr: sr}
 }
 
-func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, *int, error) {
+func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, *float64, error) {
 	settlementLink, companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, err := su.sr.FetchStockInfo(securitiesCode)
 	if err != nil {
 		return "", "", nil, nil, nil, nil, nil, err

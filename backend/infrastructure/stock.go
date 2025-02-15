@@ -5,6 +5,7 @@ import (
 	"domestic-stock-checker/utils"
 	"fmt"
 	"log"
+	"math"
 	"strconv"
 	"time"
 
@@ -91,22 +92,26 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, strin
 	return settlementLink, companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, nil
 }
 
-func (sp *stockPersistence) CheckEPS(companyPerformances [][]string) *int {
+func (sp *stockPersistence) CheckEPS(companyPerformances [][]string) *float64 {
 	score := 0
+	totalNum := 0
 	epsIndex := utils.FindIndex[string](companyPerformances[0], "EPS")
 	if epsIndex == -1 {
 		return nil
 	}
 
 	for index, row := range companyPerformances {
+		nowScore, err := strconv.ParseFloat(row[epsIndex], 64)
+		if err != nil {
+			continue
+		}
+		// 数値だった場合カウント
+		totalNum++
+
 		if index < 2 {
 			continue
 		}
 		prevScore, err := strconv.ParseFloat(companyPerformances[index-1][epsIndex], 64)
-		if err != nil {
-			continue
-		}
-		nowScore, err := strconv.ParseFloat(row[epsIndex], 64)
 		if err != nil {
 			continue
 		}
@@ -118,5 +123,7 @@ func (sp *stockPersistence) CheckEPS(companyPerformances [][]string) *int {
 		}
 	}
 
-	return &score
+	percentage := math.Round(float64(score) / float64(totalNum) * 100)
+
+	return &percentage
 }
