@@ -6,7 +6,7 @@ import (
 )
 
 type StockUsecase interface {
-	GetStockInfo(securitiesCode string) (string, [][]string, [][]string, [][]string, [][]string, *int, error)
+	GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, *int, error)
 }
 
 type stockUsecase struct {
@@ -17,10 +17,10 @@ func NewStockUsecase(sr repository.StockRepository) StockUsecase {
 	return &stockUsecase{sr: sr}
 }
 
-func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, [][]string, [][]string, [][]string, [][]string, *int, error) {
-	companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, err := su.sr.FetchStockInfo(securitiesCode)
+func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, *int, error) {
+	settlementLink, companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, err := su.sr.FetchStockInfo(securitiesCode)
 	if err != nil {
-		return "", nil, nil, nil, nil, nil, err
+		return "", "", nil, nil, nil, nil, nil, err
 	}
 
 	companyPerformances = utils.CheckLastRowAndHeader(companyPerformances)
@@ -30,5 +30,5 @@ func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, [][]string,
 
 	epsScore := su.sr.CheckEPS(companyPerformances)
 
-	return companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, epsScore, nil
+	return settlementLink, companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, epsScore, nil
 }

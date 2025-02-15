@@ -1,6 +1,7 @@
 package model
 
 type StockInfo struct {
+	SettlementLink      string
 	CompanyName         string
 	CompanyPerformances [][]string
 	FinancialStatus     [][]string

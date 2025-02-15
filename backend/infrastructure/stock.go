@@ -24,7 +24,7 @@ func NewStockPersistence() repository.StockRepository {
 	return &stockPersistence{}
 }
 
-func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, [][]string, [][]string, [][]string, [][]string, error) {
+func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, error) {
 	c := colly.NewCollector()
 
 	// レートリミットの設定: 全ドメインに対して、リクエスト間に Delay と RandomDelay を挟む
@@ -34,7 +34,7 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, [][]s
 		RandomDelay: 1 * time.Second, // 最大2秒のランダムな追加遅延
 	})
 	if err != nil {
-		return "", nil, nil, nil, nil, err
+		return "", "", nil, nil, nil, nil, err
 	}
 
 	// リクエスト時の処理
@@ -52,14 +52,15 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, [][]s
 		companyName = e.Text
 	})
 
+	var settlementLink string
 	// 決算まとめページにアクセス
 	c.OnHTML("a[title='決算まとめ']", func(e *colly.HTMLElement) {
-		link := e.Attr("href")
-		fmt.Println("Found link with title:", link)
-		err = e.Request.Visit(link)
+		settlementLink = e.Attr("href")
+		fmt.Println("Found settlement link with title:", settlementLink)
+		err = e.Request.Visit(settlementLink)
 	})
 	if err != nil {
-		return "", nil, nil, nil, nil, err
+		return "", "", nil, nil, nil, nil, err
 	}
 
 	// 会社業績
@@ -85,9 +86,9 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, [][]s
 	companyURL := fmt.Sprintf("https://irbank.net/%s", secuririesCode)
 	err = c.Visit(companyURL)
 	if err != nil {
-		return "", nil, nil, nil, nil, err
+		return "", "", nil, nil, nil, nil, err
 	}
-	return companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, nil
+	return settlementLink, companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, nil
 }
 
 func (sp *stockPersistence) CheckEPS(companyPerformances [][]string) *int {
