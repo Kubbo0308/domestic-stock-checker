@@ -92,16 +92,12 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, strin
 	return settlementLink, companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, nil
 }
 
-func (sp *stockPersistence) CheckEPS(companyPerformances [][]string) *float64 {
+func (sp *stockPersistence) CheckEPS(epsTable [][]string) *float64 {
 	score := 0
 	totalNum := 0
-	epsIndex := utils.FindIndex[string](companyPerformances[0], "EPS")
-	if epsIndex == -1 {
-		return nil
-	}
 
-	for index, row := range companyPerformances {
-		nowScore, err := strconv.ParseFloat(row[epsIndex], 64)
+	for index, row := range epsTable {
+		nowScore, err := strconv.ParseFloat(row[1], 64)
 		if err != nil {
 			continue
 		}
@@ -111,7 +107,7 @@ func (sp *stockPersistence) CheckEPS(companyPerformances [][]string) *float64 {
 		if index < 2 {
 			continue
 		}
-		prevScore, err := strconv.ParseFloat(companyPerformances[index-1][epsIndex], 64)
+		prevScore, err := strconv.ParseFloat(epsTable[index-1][1], 64)
 		if err != nil {
 			continue
 		}
@@ -121,6 +117,10 @@ func (sp *stockPersistence) CheckEPS(companyPerformances [][]string) *float64 {
 		} else {
 			score--
 		}
+	}
+
+	if totalNum == 0 {
+		return nil
 	}
 
 	percentage := math.Round(float64(score) / float64(totalNum) * 100)

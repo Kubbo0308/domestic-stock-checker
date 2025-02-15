@@ -1,11 +1,16 @@
 package model
 
 type StockInfo struct {
-	SettlementLink      string
-	CompanyName         string
-	CompanyPerformances [][]string
-	FinancialStatus     [][]string
-	CashFlow            [][]string
-	DividendTrend       [][]string
-	EPSScore            *float64
+	SettlementLink       string
+	CompanyName          string
+	Profit               [][]string
+	OperatingProfitRate  [][]string
+	TotalAsset           [][]string
+	EPS                  [][]string
+	CapitalAdequacyRatio [][]string
+	SalesCashFlow        [][]string
+	CashEtc              [][]string
+	OneStockDividend     [][]string
+	DividendPayoutRatio  [][]string
+	EPSScore             *float64
 }
