@@ -7,5 +7,26 @@
   "workspaceFolder": "/go/src/app",
   "remoteUser": "docker",
   "updateRemoteUserUID": true,
-  "shutdownAction": "stopCompose"
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "go.toolsManagement.checkForUpdates": "off",
+        "go.gopath": "/go",
+        "go.formatTool": "gofmt",
+        "go.useLanguageServer": true,
+        "go.lintTool": "golangci-lint",
+        "go.lintFlags": ["--fast"],
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "golang.go",
+        "shardulm94.trailing-spaces",
+        "MS-CEINTL.vscode-language-pack-ja",
+        "vscode-icons-team.vscode-icons",
+        "oderwat.indent-rainbow",
+        "hbenl.vscode-test-explorer"
+      ]
+    }
+  }
 }
