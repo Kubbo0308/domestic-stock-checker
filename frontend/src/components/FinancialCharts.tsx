@@ -17,7 +17,7 @@ const FinancialCharts = ({ company }: { company: any }) => {
       return [];
     }
 
-    return company.CompanyPerformances.slice(1).map((data: any) => ({
+    return company.CompanyPerformances.slice(1).map((data: string[]) => ({
       year: data[0],
       revenue: parseFloat(data[1]),
       eps: parseFloat(data[4]),
