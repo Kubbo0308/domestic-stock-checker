@@ -7,5 +7,25 @@
   "workspaceFolder": "/app",
   "remoteUser": "docker",
   "updateRemoteUserUID": true,
-  "shutdownAction": "stopCompose"
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "formulahendry.auto-close-tag",
+        "steoates.autoimport",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.vscode-typescript-next",
+        "Orta.vscode-jest",
+        "christian-kohler.path-intellisense",
+        "shardulm94.trailing-spaces",
+        "MS-CEINTL.vscode-language-pack-ja",
+        "vscode-icons-team.vscode-icons",
+        "oderwat.indent-rainbow",
+        "hbenl.vscode-test-explorer"
+      ]
+    }
+  }
 }
