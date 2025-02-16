@@ -1,10 +1,10 @@
 {
-  "name": "frontend",
+  "name": "backend",
   "dockerComposeFile": [
     "../../compose.yml"
   ],
-  "service": "frontend",
-  "workspaceFolder": "/app",
+  "service": "backend",
+  "workspaceFolder": "/go/src/app",
   "remoteUser": "docker",
   "updateRemoteUserUID": true,
   "shutdownAction": "stopCompose"
