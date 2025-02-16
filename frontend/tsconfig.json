@@ -7,7 +7,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "*": [
+        "bun_modules/*",
+        "node_modules/*"
+      ]
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,
