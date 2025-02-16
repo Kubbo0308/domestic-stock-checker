@@ -7,7 +7,7 @@ RUN apk update && \
   apk --no-cache add git && \
   apk --no-cache add bash
 # devcontainer上で使用するユーザ（'vscode'）を指定
-ARG USERNAME=docker
+ARG USERNAME=vscode
 USER ${USERNAME}
 # 作業ディレクトリ変更
 WORKDIR /go/src/app

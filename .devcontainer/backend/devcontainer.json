@@ -5,7 +5,7 @@
   ],
   "service": "backend",
   "workspaceFolder": "/go/src/app",
-  "remoteUser": "docker",
+  "remoteUser": "vscode",
   "updateRemoteUserUID": true,
   "shutdownAction": "stopCompose",
   "customizations": {

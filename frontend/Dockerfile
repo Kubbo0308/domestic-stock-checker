@@ -16,7 +16,7 @@ RUN set -x \
   && curl -fsSL https://bun.sh/install | BUN_INSTALL=/usr bash
 
 # devcontainer上で使用するユーザ（'vscode'）を指定
-ARG USERNAME=docker
+ARG USERNAME=vscode
 USER ${USERNAME}
 
 # devcontainer起動時の作業ディレクトリを指定
