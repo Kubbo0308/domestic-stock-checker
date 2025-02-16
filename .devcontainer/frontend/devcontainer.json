@@ -1,0 +1,11 @@
+{
+  "name": "frontend",
+  "dockerComposeFile": [
+    "../../compose.yml"
+  ],
+  "service": "frontend",
+  "workspaceFolder": "/app",
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true,
+  "shutdownAction": "stopCompose"
+}
