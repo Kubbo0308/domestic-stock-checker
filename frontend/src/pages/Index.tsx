@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { IoSearchSharp } from "react-icons/io5";
 import CompanyOverview from "@/components/CompanyOverview";
 import FinancialCharts from "@/components/FinancialCharts";
 import HealthScore from "@/components/HealthScore";
@@ -34,7 +34,7 @@ const Index = () => {
               className="text-lg"
             />
             <Button onClick={handleSearch} size="lg">
-              <Search className="mr-2" />
+              <IoSearchSharp />
               検索
             </Button>
           </div>

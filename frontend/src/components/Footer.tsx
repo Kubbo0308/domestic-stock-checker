@@ -1,5 +1,7 @@
+import { FaGithub } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { IoIosMail } from "react-icons/io";
 import { Card } from "@/components/ui/card";
-import { Github, Mail, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -42,21 +44,21 @@ const Footer = () => {
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="GitHub"
               >
-                <Github size={20} />
+                <FaGithub size={20} />
               </a>
               <a
                 href="#"
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="Twitter"
               >
-                <Twitter size={20} />
+                <FaXTwitter size={20} />
               </a>
               <a
                 href="#"
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="Email"
               >
-                <Mail size={20} />
+                <IoIosMail size={20} />
               </a>
             </div>
           </div>
