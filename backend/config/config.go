@@ -13,7 +13,7 @@ func NewConfig(sh handler.StockHandler) *gin.Engine {
 
 	// CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:  []string{"http://localhost:8080"},
+		AllowOrigins:  []string{"http://localhost:3000"},
 		AllowMethods:  []string{"GET"},
 		AllowHeaders:  []string{"Origin"},
 		ExposeHeaders: []string{"Content-Length"},
