@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -41,13 +41,11 @@ const Index = () => {
         `http://localhost:8080/stock?securitiesCode=${searchTerm}`,
         { signal: abortController.signal }
       );
-      const { data } = await res.json();
+      const data = await res.json();
 
       switch (res.status) {
         case 200:
-          console.log(res);
           setCompanyData(data);
-          console.log("succeded", data);
           setIsLoading(false);
           break;
         case 500:
@@ -82,10 +80,6 @@ const Index = () => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log(companyData);
-  }, [companyData]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted p-6">

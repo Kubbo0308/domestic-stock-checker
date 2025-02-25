@@ -18,9 +18,9 @@ const FinancialCharts = ({ company }: { company: CompanyData }) => {
       return [];
     }
 
-    return data.slice(1).map((data: string[]) => ({
-      year: data[0],
-      revenue: parseFloat(data[1]),
+    return data.slice(1).map((row: string[]) => ({
+      year: row[0],
+      revenue: parseFloat(row[1]),
     }));
   };
 
@@ -55,7 +55,7 @@ const FinancialCharts = ({ company }: { company: CompanyData }) => {
                 <Tooltip />
                 <Line
                   type="monotone"
-                  dataKey="profit"
+                  dataKey="revenue"
                   stroke="#8884d8"
                   strokeWidth={2}
                   dot={{ r: 4 }}
@@ -75,7 +75,7 @@ const FinancialCharts = ({ company }: { company: CompanyData }) => {
                 <Tooltip />
                 <Line
                   type="monotone"
-                  dataKey="operatingProfitRate"
+                  dataKey="revenue"
                   stroke="#82ca9d"
                   strokeWidth={2}
                   dot={{ r: 4 }}
