@@ -3,11 +3,12 @@ import { Loader2 } from "lucide-react";
 
 interface LoadingDialogProps {
   open: boolean;
+  onCancel: () => void;
 }
 
-const LoadingDialog = ({ open }: LoadingDialogProps) => {
+const LoadingDialog = ({ open, onCancel }: LoadingDialogProps) => {
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent className="sm:max-w-md">
         <div className="flex flex-col items-center justify-center p-6">
           <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
