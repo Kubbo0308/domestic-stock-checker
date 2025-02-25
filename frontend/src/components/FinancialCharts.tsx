@@ -9,26 +9,25 @@ import {
   CartesianGrid,
 } from "recharts";
 import { motion } from "framer-motion";
+import { CompanyData } from "@/domain.types";
 
-const FinancialCharts = ({ company }: { company: any }) => {
+const FinancialCharts = ({ company }: { company: CompanyData }) => {
   // Transform data for charts
-  const getChartData = () => {
-    if (!company?.CompanyPerformances?.length) {
+  const getChartData = (data: string[][]) => {
+    if (!data?.length) {
       return [];
     }
 
-    return company.CompanyPerformances.slice(1).map((data: string[]) => ({
+    return data.slice(1).map((data: string[]) => ({
       year: data[0],
       revenue: parseFloat(data[1]),
-      eps: parseFloat(data[4]),
-      roe: parseFloat(data[6]),
-      roa: parseFloat(data[7]),
     }));
   };
 
-  const chartData = getChartData();
+  const profits = getChartData(company.Profit);
+  const operatingProfitRate = getChartData(company.OperatingProfitRate);
 
-  if (chartData.length === 0) {
+  if (profits.length === 0) {
     return (
       <Card className="p-6 backdrop-blur-sm bg-white/50">
         <h2 className="text-2xl font-bold mb-4">財務推移</h2>
@@ -47,16 +46,16 @@ const FinancialCharts = ({ company }: { company: any }) => {
         <h2 className="text-2xl font-bold mb-4">財務推移</h2>
         <div className="space-y-8">
           <div className="h-[300px]">
-            <h3 className="text-lg font-semibold mb-2">EPS推移</h3>
+            <h3 className="text-lg font-semibold mb-2">利益推移</h3>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
+              <LineChart data={profits}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="year" />
                 <YAxis />
                 <Tooltip />
                 <Line
                   type="monotone"
-                  dataKey="eps"
+                  dataKey="profit"
                   stroke="#8884d8"
                   strokeWidth={2}
                   dot={{ r: 4 }}
@@ -67,16 +66,16 @@ const FinancialCharts = ({ company }: { company: any }) => {
           </div>
 
           <div className="h-[300px]">
-            <h3 className="text-lg font-semibold mb-2">ROE/ROA推移</h3>
+            <h3 className="text-lg font-semibold mb-2">営業利益率推移</h3>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
+              <LineChart data={operatingProfitRate}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="year" />
                 <YAxis />
                 <Tooltip />
                 <Line
                   type="monotone"
-                  dataKey="roe"
+                  dataKey="operatingProfitRate"
                   stroke="#82ca9d"
                   strokeWidth={2}
                   dot={{ r: 4 }}

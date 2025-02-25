@@ -2,8 +2,9 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { CompanyData } from "@/domain.types";
 
-const HealthScore = ({ company }: { company: any }) => {
+const HealthScore = ({ company }: { company: CompanyData }) => {
   const [progress, setProgress] = useState(0);
 
   // Calculate health score based on multiple factors
