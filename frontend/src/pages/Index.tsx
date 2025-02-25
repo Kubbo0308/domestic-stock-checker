@@ -45,6 +45,7 @@ const Index = () => {
 
       switch (res.status) {
         case 200:
+          console.log(res);
           setCompanyData(data);
           console.log("succeded", data);
           setIsLoading(false);
