@@ -37,7 +37,6 @@ const Index = () => {
     setError(null);
 
     try {
-      console.log(`http://localhost:8080/stock?securitiesCode=${searchTerm}`);
       const res = await fetch(
         `http://localhost:8080/stock?securitiesCode=${searchTerm}`,
         { signal: abortController.signal }
@@ -47,8 +46,7 @@ const Index = () => {
       switch (res.status) {
         case 200:
           setCompanyData(data);
-          console.log(data);
-          console.log("succeded");
+          console.log("succeded", data);
           setIsLoading(false);
           break;
         case 500:
@@ -66,7 +64,6 @@ const Index = () => {
       }
     } catch (error: unknown) {
       if (error instanceof Error && error.name !== "AbortError") {
-        console.error("リクエストエラー", error);
         setError({
           title: "エラーが発生しました",
           description: "再度お試しください。",
