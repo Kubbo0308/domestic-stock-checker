@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,17 +7,42 @@ import CompanyOverview from "@/components/CompanyOverview";
 import FinancialCharts from "@/components/FinancialCharts";
 import HealthScore from "@/components/HealthScore";
 import Footer from "@/components/Footer";
-import { mockCompanyData } from "@/data/mockCompanyData";
+import { CompanyData } from "@/domain.types";
+import LoadingDialog from "@/components/LoadingDialog";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [companyData, setCompanyData] = useState<any>(null);
+  const [companyData, setCompanyData] = useState<CompanyData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = async () => {
-    // 実際のアプリケーションではAPIコールを行います
-    // 今はモックデータを使用します
-    setCompanyData(mockCompanyData);
+    setIsLoading(true);
+    try {
+      console.log(`http://localhost:8080/stock?securitiesCode=${searchTerm}`);
+      const res = await fetch(
+        `http://localhost:8080/stock?securitiesCode=${searchTerm}`
+      );
+      const { data } = await res.json();
+
+      switch (res.status) {
+        case 200:
+          setCompanyData(data);
+          console.log(data);
+          console.log("succeded");
+          setIsLoading(false);
+          break;
+        default:
+          setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("リクエストエラー", error);
+      setIsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    console.log(companyData);
+  }, [companyData]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted p-6">
@@ -28,14 +53,14 @@ const Index = () => {
           </h1>
           <div className="flex gap-4 max-w-xl mx-auto">
             <Input
-              placeholder="企業名または証券番号を入力"
+              placeholder="証券番号を入力"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="text-lg"
             />
             <Button onClick={handleSearch} size="lg">
               <IoSearchSharp />
-              検索
+              チェック
             </Button>
           </div>
         </Card>
@@ -50,6 +75,7 @@ const Index = () => {
 
         <Footer />
       </div>
+      <LoadingDialog open={isLoading} />
     </div>
   );
 };
