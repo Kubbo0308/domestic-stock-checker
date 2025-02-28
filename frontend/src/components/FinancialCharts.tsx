@@ -1,33 +1,35 @@
 import { Card } from "@/components/ui/card";
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-} from "recharts";
 import { motion } from "framer-motion";
 import { CompanyData } from "@/domain.types";
+import { Chart } from "./Chart";
 
 const FinancialCharts = ({ company }: { company: CompanyData }) => {
   // Transform data for charts
-  const getChartData = (data: string[][]) => {
+  const getChartData = (
+    data: string[][]
+  ): { title: string; chartData: { year: string; revenue: number }[] } => {
     if (!data?.length) {
-      return [];
+      return { title: "", chartData: [] };
     }
 
-    return data.slice(1).map((row: string[]) => ({
+    const chartData = data.slice(1).map((row: string[]) => ({
       year: row[0],
       revenue: parseFloat(row[1]),
     }));
+    return { title: data[0][1], chartData: chartData };
   };
 
-  const profits = getChartData(company.Profit);
+  const profit = getChartData(company.Profit);
   const operatingProfitRate = getChartData(company.OperatingProfitRate);
+  const totalAsset = getChartData(company.TotalAsset);
+  const eps = getChartData(company.EPS);
+  const capitalAdequacyRatio = getChartData(company.CapitalAdequacyRatio);
+  const salesCashFlow = getChartData(company.SalesCashFlow);
+  const cashEtc = getChartData(company.CashEtc);
+  const oneStockDividend = getChartData(company.OneStockDividend);
+  const dividendPayoutRatio = getChartData(company.DividendPayoutRatio);
 
-  if (profits.length === 0) {
+  if (profit.chartData.length === 0) {
     return (
       <Card className="p-6 backdrop-blur-sm bg-white/50">
         <h2 className="text-2xl font-bold mb-4">財務推移</h2>
@@ -45,53 +47,27 @@ const FinancialCharts = ({ company }: { company: CompanyData }) => {
       <Card className="p-6 backdrop-blur-sm bg-white/50">
         <h2 className="text-2xl font-bold mb-4">財務推移</h2>
         <div className="space-y-8">
-          <div className="h-[300px]">
-            <h3 className="text-lg font-semibold mb-2">利益推移</h3>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={profits}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#8884d8"
-                  strokeWidth={2}
-                  dot={{ r: 4 }}
-                  animationDuration={1500}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="h-[300px]">
-            <h3 className="text-lg font-semibold mb-2">営業利益率推移</h3>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={operatingProfitRate}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#82ca9d"
-                  strokeWidth={2}
-                  dot={{ r: 4 }}
-                  animationDuration={1500}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="roa"
-                  stroke="#ffc658"
-                  strokeWidth={2}
-                  dot={{ r: 4 }}
-                  animationDuration={1500}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          <Chart title={profit.title} data={profit.chartData} />
+          <Chart
+            title={operatingProfitRate.title}
+            data={operatingProfitRate.chartData}
+          />
+          <Chart title={totalAsset.title} data={totalAsset.chartData} />
+          <Chart title={eps.title} data={eps.chartData} />
+          <Chart
+            title={capitalAdequacyRatio.title}
+            data={capitalAdequacyRatio.chartData}
+          />
+          <Chart title={salesCashFlow.title} data={salesCashFlow.chartData} />
+          <Chart title={cashEtc.title} data={cashEtc.chartData} />
+          <Chart
+            title={oneStockDividend.title}
+            data={oneStockDividend.chartData}
+          />
+          <Chart
+            title={dividendPayoutRatio.title}
+            data={dividendPayoutRatio.chartData}
+          />
         </div>
       </Card>
     </motion.div>
