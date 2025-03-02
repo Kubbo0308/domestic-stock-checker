@@ -8,6 +8,7 @@ import (
 
 func NewStockDI() handler.StockHandler {
 	stockPersistence := infrastructure.NewStockPersistence()
-	stockUsecase := usecase.NewStockUsecase(stockPersistence)
+	calculatePersistence := infrastructure.NewCalculatePersistence()
+	stockUsecase := usecase.NewStockUsecase(stockPersistence, calculatePersistence)
 	return handler.NewStockHandler(stockUsecase)
 }
