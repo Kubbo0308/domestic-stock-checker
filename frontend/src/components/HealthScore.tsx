@@ -7,9 +7,8 @@ import { CompanyData } from "@/domain.types";
 const HealthScore = ({ company }: { company: CompanyData }) => {
   const [progress, setProgress] = useState(0);
 
-  // Calculate health score based on multiple factors
   const calculateHealthScore = () => {
-    return Math.min(100, Math.max(0, company.EPSScore * 10));
+    return Math.min(100, Math.max(0, Math.trunc(company.TotalScore)));
   };
 
   const getHealthComment = (score: number) => {

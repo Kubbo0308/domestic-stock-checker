@@ -10,5 +10,5 @@ export interface CompanyData {
 	CashEtc:              string[][]
 	OneStockDividend:     string[][]
 	DividendPayoutRatio:  string[][]
-	EPSScore:             number
+	TotalScore:           number
 }
