@@ -5,8 +5,6 @@ import (
 	"domestic-stock-checker/utils"
 	"fmt"
 	"log"
-	"math"
-	"strconv"
 	"time"
 
 	"github.com/gocolly/colly/v2"
@@ -90,40 +88,4 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, strin
 		return "", "", nil, nil, nil, nil, err
 	}
 	return settlementLink, companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, nil
-}
-
-func (sp *stockPersistence) CheckEPS(epsTable [][]string) *float64 {
-	score := 0
-	totalNum := 0
-
-	for index, row := range epsTable {
-		nowScore, err := strconv.ParseFloat(row[1], 64)
-		if err != nil {
-			continue
-		}
-		// 数値だった場合カウント
-		totalNum++
-
-		if index < 2 {
-			continue
-		}
-		prevScore, err := strconv.ParseFloat(epsTable[index-1][1], 64)
-		if err != nil {
-			continue
-		}
-
-		if nowScore >= prevScore {
-			score++
-		} else {
-			score--
-		}
-	}
-
-	if totalNum == 0 {
-		return nil
-	}
-
-	percentage := math.Round(float64(score) / float64(totalNum) * 100)
-
-	return &percentage
 }
