@@ -1,4 +1,4 @@
-include .env
+# include .env
 
 # 変数設定
 BACKEND_CONTAINER := backend
@@ -15,6 +15,10 @@ up:
 .PHONY: down
 down:
 	docker compose down
+
+.PHONY: ps
+ps:
+	docker compose ps
 
 .PHONY: restart
 restart:
