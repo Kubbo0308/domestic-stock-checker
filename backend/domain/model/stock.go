@@ -12,5 +12,5 @@ type StockInfo struct {
 	CashEtc              [][]string
 	OneStockDividend     [][]string
 	DividendPayoutRatio  [][]string
-	EPSScore             *float64
+	TotalScore           float64
 }
