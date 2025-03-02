@@ -40,10 +40,10 @@ func TransferStockInfo(settlementLink, companyName string, profit, operatingProf
 	// 全て nil の場合は 0 を返す
 	if totalWeight == 0 {
 		totalScore = 0
+	} else {
+		// 重みの合計で割って正規化（0～100点）
+		totalScore = weightedSum / totalWeight
 	}
-
-	// 重みの合計で割って正規化（0～100点）
-	totalScore = weightedSum / totalWeight
 
 	return model.StockInfo{
 		SettlementLink:       settlementLink,
