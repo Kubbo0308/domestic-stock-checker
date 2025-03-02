@@ -13,9 +13,9 @@ func NewCalculatePersistence() repository.CalculateRepository {
 
 // CalculateMonetaryScore は収益や総資産などの金額データ（単位：兆、億、万対応）に対して、
 // 各年度間の成長率の一貫性と平均成長率からスコア（0～100点）を算出する例
-func (cp *calculatePersistence) CalculateMonetaryScore(data [][]string) float64 {
+func (cp *calculatePersistence) CalculateMonetaryScore(data [][]string) *float64 {
 	if len(data) < 2 {
-		return 0.0
+		return nil
 	}
 	var values []float64
 	for i := 1; i < len(data); i++ {
@@ -29,7 +29,7 @@ func (cp *calculatePersistence) CalculateMonetaryScore(data [][]string) float64 
 		values = append(values, v)
 	}
 	if len(values) < 2 {
-		return 0.0
+		return nil
 	}
 
 	growthRates := calculateGrowthRates(values)
@@ -56,14 +56,14 @@ func (cp *calculatePersistence) CalculateMonetaryScore(data [][]string) float64 
 
 	// 一貫性を百分率化して50%、平均成長率を50%として加重平均
 	finalScore := 0.5*(consistency*100) + 0.5*growthScore
-	return finalScore
+	return &finalScore
 }
 
 // CalculatePercentageScore は、営業利益率などパーセント値のデータについて、
 // 各年度の成長率を考慮したスコア（0～100）を算出する例
-func (cp *calculatePersistence) CalculatePercentageScore(data [][]string) float64 {
+func (cp *calculatePersistence) CalculatePercentageScore(data [][]string) *float64 {
 	if len(data) < 2 {
-		return 0.0
+		return nil
 	}
 	var values []float64
 	for i := 1; i < len(data); i++ {
@@ -77,7 +77,7 @@ func (cp *calculatePersistence) CalculatePercentageScore(data [][]string) float6
 		values = append(values, v)
 	}
 	if len(values) < 2 {
-		return 0.0
+		return nil
 	}
 	growthRates := calculateGrowthRates(values)
 
@@ -99,13 +99,13 @@ func (cp *calculatePersistence) CalculatePercentageScore(data [][]string) float6
 		growthScore = 0
 	}
 	finalScore := 0.5*(consistency*100) + 0.5*growthScore
-	return finalScore
+	return &finalScore
 }
 
 // CalculateCapitalAdequacyScore は株主資本比率の最新値から線形にスコアを算出する例
-func (cp *calculatePersistence) CalculateCapitalAdequacyScore(data [][]string) float64 {
+func (cp *calculatePersistence) CalculateCapitalAdequacyScore(data [][]string) *float64 {
 	if len(data) < 2 {
-		return 0.0
+		return nil
 	}
 	var latest float64 = 0.0
 	for i := 1; i < len(data); i++ {
@@ -128,14 +128,14 @@ func (cp *calculatePersistence) CalculateCapitalAdequacyScore(data [][]string) f
 	} else {
 		score = 100
 	}
-	return score
+	return &score
 }
 
 // CalculateDividendPayoutScore は配当性向について、最新値から線形にスコアを算出する例
 // 例として、理想値20%からの乖離で減点
-func (cp *calculatePersistence) CalculateDividendPayoutScore(data [][]string) float64 {
+func (cp *calculatePersistence) CalculateDividendPayoutScore(data [][]string) *float64 {
 	if len(data) < 2 {
-		return 0.0
+		return nil
 	}
 	var latest float64 = 0.0
 	for i := 1; i < len(data); i++ {
@@ -156,7 +156,7 @@ func (cp *calculatePersistence) CalculateDividendPayoutScore(data [][]string) fl
 	if score > 100 {
 		score = 100
 	}
-	return score
+	return &score
 }
 
 func absFloat(x float64) float64 {

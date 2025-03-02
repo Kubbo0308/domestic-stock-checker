@@ -7,22 +7,26 @@ import (
 )
 
 type StockUsecase interface {
-	GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, *float64, error)
+	GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, *float64, *float64, *float64, *float64, *float64, *float64, *float64, *float64, *float64, error)
 }
 
 type stockUsecase struct {
 	sr repository.StockRepository
+	cr repository.CalculateRepository
 }
 
-func NewStockUsecase(sr repository.StockRepository) StockUsecase {
-	return &stockUsecase{sr: sr}
+func NewStockUsecase(sr repository.StockRepository, cr repository.CalculateRepository) StockUsecase {
+	return &stockUsecase{
+		sr: sr,
+		cr: cr,
+	}
 }
 
-func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, *float64, error) {
+func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, [][]string, *float64, *float64, *float64, *float64, *float64, *float64, *float64, *float64, *float64, error) {
 	// データ取得
 	settlementLink, companyName, companyPerformances, financialStatus, cashFlow, dividendTrend, err := su.sr.FetchStockInfo(securitiesCode)
 	if err != nil {
-		return "", "", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, err
+		return "", "", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, err
 	}
 
 	// フォーマット
@@ -42,7 +46,16 @@ func (su *stockUsecase) GetStockInfo(securitiesCode string) (string, string, [][
 	oneStockDividend := utils.ExtractColumn(dividendTrend, constants.OneStockDividend)
 	dividendPayoutRatio := utils.ExtractColumn(dividendTrend, constants.DividendPayoutRatio)
 
-	epsScore := su.sr.CheckEPS(eps)
+	// スコア算出
+	profitScore := su.cr.CalculateMonetaryScore(profit)
+	operatingProfitRateScore := su.cr.CalculatePercentageScore(operatingProfitRate)
+	totalAssetScore := su.cr.CalculateMonetaryScore(totalAsset)
+	epsScore := su.cr.CalculatePercentageScore(eps)
+	capitalAdequacyRatioScore := su.cr.CalculateCapitalAdequacyScore(capitalAdequacyRatio)
+	salesCashFlowScore := su.cr.CalculateMonetaryScore(salesCashFlow)
+	cashEtcScore := su.cr.CalculateMonetaryScore(cashEtc)
+	oneStockDividendScore := su.cr.CalculatePercentageScore(oneStockDividend)
+	dividendPayoutRatioScore := su.cr.CalculateDividendPayoutScore(dividendPayoutRatio)
 
-	return settlementLink, companyName, profit, operatingProfitRate, totalAsset, eps, capitalAdequacyRatio, salesCashFlow, cashEtc, oneStockDividend, dividendPayoutRatio, epsScore, nil
+	return settlementLink, companyName, profit, operatingProfitRate, totalAsset, eps, capitalAdequacyRatio, salesCashFlow, cashEtc, oneStockDividend, dividendPayoutRatio, profitScore, operatingProfitRateScore, totalAssetScore, epsScore, capitalAdequacyRatioScore, salesCashFlowScore, cashEtcScore, oneStockDividendScore, dividendPayoutRatioScore, nil
 }
