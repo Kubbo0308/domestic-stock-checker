@@ -45,8 +45,8 @@ func (cp *calculatePersistence) CalculateMonetaryScore(data [][]string) *float64
 
 	avgGrowth := utils.Average(growthRates)
 
-	// ここでは平均成長率が 10% (0.10) であれば 100点とする例
-	growthScore := (avgGrowth / 0.10) * 100
+	// ここでは平均成長率が 8% であれば 100点とする例
+	growthScore := (avgGrowth / 0.08) * 100
 	if growthScore > 100 {
 		growthScore = 100
 	}
@@ -90,8 +90,8 @@ func (cp *calculatePersistence) CalculatePercentageScore(data [][]string) *float
 	consistency := float64(positiveCount) / float64(len(growthRates))
 	avgGrowth := utils.Average(growthRates)
 
-	// ここでは、平均成長率が 10% (0.10) であれば 100点とする例
-	growthScore := (avgGrowth / 0.10) * 100
+	// ここでは、平均成長率が 8% であれば 100点とする例
+	growthScore := (avgGrowth / 0.08) * 100
 	if growthScore > 100 {
 		growthScore = 100
 	}
