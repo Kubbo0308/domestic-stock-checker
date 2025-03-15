@@ -1,4 +1,4 @@
-# include .env
+include .env
 
 # 変数設定
 BACKEND_CONTAINER := backend
