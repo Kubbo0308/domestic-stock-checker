@@ -37,7 +37,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-4">お問い合わせ</h3>
+            <h3 className="text-lg font-semibold mb-4">連絡先</h3>
             <div className="flex space-x-4">
               <a
                 href="#"
