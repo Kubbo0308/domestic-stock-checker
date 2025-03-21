@@ -38,7 +38,7 @@ const Index = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8080/stock?securitiesCode=${searchTerm}`,
+        `${process.env.BACKEND_ENDPOINT_URL}stock?securitiesCode=${searchTerm}`,
         { signal: abortController.signal }
       );
       const data = await res.json();

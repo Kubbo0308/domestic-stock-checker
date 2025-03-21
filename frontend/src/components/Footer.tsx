@@ -40,21 +40,21 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">連絡先</h3>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href={process.env.GITHUB_URL}
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="GitHub"
               >
                 <FaGithub size={20} />
               </a>
               <a
-                href="#"
+                href={process.env.X_URL}
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="Twitter"
               >
                 <FaXTwitter size={20} />
               </a>
               <a
-                href="#"
+                href={process.env.GMAIL_ADDRESS}
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="Email"
               >
