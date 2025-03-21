@@ -4,7 +4,7 @@ services:
     build: ./backend
     tty: true
     ports:
-        - "${BACKEND_PORT}:8080"
+        - ${BACKEND_PORT}:8080
     volumes:
         - type: bind
           source: ./backend
@@ -12,7 +12,6 @@ services:
     environment:
       TZ: Asia/Tokyo
       ENV: ${ENV}
-      IR_BANK_URL: ${IR_BANK_URL}
 
   frontend:
     container_name: frontend
@@ -22,17 +21,18 @@ services:
     working_dir: /app
     tty: true
     ports:
-        - "3000:3000"
+        - ${FRONTEND_PORT}:3000
     volumes:
       - ./frontend:/app
       - node_modules:/app/node_modules
     environment:
       TZ: Asia/Tokyo
-      BACKEND_URL: ${BACKEND_URL}
+      BACKEND_ENDPOINT_URL: ${BACKEND_ENDPOINT_URL:-http://localhost:8080}
       ENV: ${ENV}
       GITHUB_URL: ${GITHUB_URL}
       X_URL: ${X_URL}
       GMAIL_ADDRESS: ${GMAIL_ADDRESS}
+      IR_BANK_URL: ${IR_BANK_URL}
 
 volumes:
   node_modules:
