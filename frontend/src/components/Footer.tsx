@@ -2,6 +2,7 @@ import { FaGithub } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { IoIosMail } from "react-icons/io";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -19,19 +20,19 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">リンク</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <Link to="/guide" className="hover:text-primary transition-colors">
                   使い方ガイド
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <Link to="/privacy" className="hover:text-primary transition-colors">
                   プライバシーポリシー
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <Link to="/terms" className="hover:text-primary transition-colors">
                   利用規約
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
