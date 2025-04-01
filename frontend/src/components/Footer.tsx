@@ -20,17 +20,26 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">リンク</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link to="/guide" className="hover:text-primary transition-colors">
+                <Link
+                  to="/guide"
+                  className="hover:text-primary transition-colors"
+                >
                   使い方ガイド
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" className="hover:text-primary transition-colors">
+                <Link
+                  to="/privacy"
+                  className="hover:text-primary transition-colors"
+                >
                   プライバシーポリシー
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="hover:text-primary transition-colors">
+                <Link
+                  to="/terms"
+                  className="hover:text-primary transition-colors"
+                >
                   利用規約
                 </Link>
               </li>
@@ -41,21 +50,21 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">連絡先</h3>
             <div className="flex space-x-4">
               <a
-                href={process.env.GITHUB_URL}
+                href={import.meta.env.VITE_GITHUB_URL}
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="GitHub"
               >
                 <FaGithub size={20} />
               </a>
               <a
-                href={process.env.X_URL}
+                href={import.meta.env.VITE_X_URL}
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="Twitter"
               >
                 <FaXTwitter size={20} />
               </a>
               <a
-                href={process.env.GMAIL_ADDRESS}
+                href={import.meta.env.VITE_GMAIL_ADDRESS}
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="Email"
               >

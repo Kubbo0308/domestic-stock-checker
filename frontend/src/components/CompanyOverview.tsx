@@ -14,7 +14,9 @@ const CompanyOverview = ({ company }: { company: CompanyData }) => {
         <div className="p-4 rounded-lg bg-white/50">
           <p className="text-sm text-muted-foreground">詳細情報</p>
           <a
-            href={`${process.env.IR_BANK_URL}${company.SettlementLink}`}
+            href={`${import.meta.env.VITE_IR_BANK_URL}${
+              company.SettlementLink
+            }`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center text-primary hover:underline mt-1"
