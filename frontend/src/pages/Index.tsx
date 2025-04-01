@@ -37,10 +37,9 @@ const Index = () => {
     setError(null);
 
     try {
-      const res = await fetch(
-        `${process.env.BACKEND_ENDPOINT_URL}stock?securitiesCode=${searchTerm}`,
-        { signal: abortController.signal }
-      );
+      const res = await fetch(`/api/stock?securitiesCode=${searchTerm}`, {
+        signal: abortController.signal,
+      });
       const data = await res.json();
 
       switch (res.status) {
