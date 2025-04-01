@@ -8,6 +8,8 @@
   "remoteUser": "vscode",
   "updateRemoteUserUID": true,
   "shutdownAction": "stopCompose",
+  "forwardPorts": [3000],
+  "postStartCommand": "bun install && bun run dev",
   "customizations": {
     "vscode": {
       "settings": {

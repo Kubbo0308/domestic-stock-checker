@@ -1,10 +1,13 @@
 services:
   backend:
     container_name: backend
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: dev
     tty: true
     ports:
-        - ${BACKEND_PORT}:8080
+        - ${BACKEND_PORT:-8080}:8080
     volumes:
         - type: bind
           source: ./backend
@@ -18,10 +21,11 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      target: dev
     working_dir: /app
     tty: true
     ports:
-        - ${FRONTEND_PORT}:3000
+        - ${FRONTEND_PORT:-3000}:3000
     volumes:
       - ./frontend:/app
       - node_modules:/app/node_modules
@@ -29,10 +33,10 @@ services:
       TZ: Asia/Tokyo
       BACKEND_ENDPOINT_URL: ${BACKEND_ENDPOINT_URL:-http://localhost:8080}
       ENV: ${ENV}
-      GITHUB_URL: ${GITHUB_URL}
-      X_URL: ${X_URL}
-      GMAIL_ADDRESS: ${GMAIL_ADDRESS}
-      IR_BANK_URL: ${IR_BANK_URL}
+      VITE_GITHUB_URL: ${VITE_GITHUB_URL}
+      VITE_X_URL: ${VITE_X_URL}
+      VITE_GMAIL_ADDRESS: ${VITE_GMAIL_ADDRESS}
+      VITE_IR_BANK_URL: ${VITE_IR_BANK_URL}
 
 volumes:
   node_modules:
