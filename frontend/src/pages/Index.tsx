@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import { CompanyData } from "@/domain.types";
 import LoadingDialog from "@/components/LoadingDialog";
 import ErrorDialog from "@/components/ErrorDialog";
+import Header from "@/components/Header";
 
 interface ErrorState {
   title: string;
@@ -81,44 +82,47 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted p-6">
-      <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
-        <Card className="p-8 backdrop-blur-sm bg-white/50">
-          <h1 className="text-4xl font-bold text-center mb-8">
-            企業健康度チェッカー
-          </h1>
-          <div className="flex gap-4 max-w-xl mx-auto">
-            <Input
-              placeholder="証券番号を入力"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="text-lg"
-            />
-            <Button onClick={handleSearch} size="lg">
-              <IoSearchSharp />
-              チェック
-            </Button>
-          </div>
-        </Card>
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-b from-background to-muted p-6">
+        <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
+          <Card className="p-8 backdrop-blur-sm bg-white/50">
+            <h1 className="text-4xl font-bold text-center mb-8">
+              企業健康度チェッカー
+            </h1>
+            <div className="flex gap-4 max-w-xl mx-auto">
+              <Input
+                placeholder="証券番号を入力"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="text-lg"
+              />
+              <Button onClick={handleSearch} size="lg">
+                <IoSearchSharp />
+                チェック
+              </Button>
+            </div>
+          </Card>
 
-        {companyData && (
-          <div className="space-y-6">
-            <CompanyOverview company={companyData} />
-            <HealthScore company={companyData} />
-            <FinancialCharts company={companyData} />
-          </div>
-        )}
+          {companyData && (
+            <div className="space-y-6">
+              <CompanyOverview company={companyData} />
+              <HealthScore company={companyData} />
+              <FinancialCharts company={companyData} />
+            </div>
+          )}
 
-        <Footer />
+          <Footer />
+        </div>
+        <LoadingDialog open={isLoading} onCancel={handleCancel} />
+        <ErrorDialog
+          open={error !== null}
+          onClose={() => setError(null)}
+          title={error?.title ?? ""}
+          description={error?.description ?? ""}
+        />
       </div>
-      <LoadingDialog open={isLoading} onCancel={handleCancel} />
-      <ErrorDialog
-        open={error !== null}
-        onClose={() => setError(null)}
-        title={error?.title ?? ""}
-        description={error?.description ?? ""}
-      />
-    </div>
+    </>
   );
 };
 
