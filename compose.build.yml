@@ -3,7 +3,7 @@ version: "3.9"
 services:
   frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile.prod
     ports:
       - "80:80"
