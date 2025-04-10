@@ -22,7 +22,6 @@ CMD ["air", "-c", ".air.toml"]
 #####################################
 FROM golang:1.23.5-alpine3.21 as builder
 WORKDIR /app
-
 # Download Go module dependencies (cache layer)
 COPY go.mod go.sum ./
 RUN go mod download

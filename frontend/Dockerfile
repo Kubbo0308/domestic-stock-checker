@@ -31,13 +31,13 @@ CMD ["bun", "run", "dev"]
 #####################################
 # build stage
 #####################################
-FROM oven/bun:1.0.0 AS builder
+FROM oven/bun:1.2.2 AS builder
 WORKDIR /app
 
 # Install dependencies (optionally add --production to skip devDependencies if build tools are in prod deps)
 COPY package.json bun.lock ./
 # use --production if possible to avoid dev-only deps&#8203;:contentReference[oaicite:2]{index=2}
-RUN bun install --production
+RUN bun install
 
 # Copy source and build the app
 COPY . .
@@ -52,10 +52,8 @@ RUN bun run build
 FROM nginx:alpine AS runner
 # Copy build output to nginx's web root
 COPY --from=builder /app/dist /usr/share/nginx/html
-
 # Copy a custom nginx config to handle SPA routing
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 # Expose port 80 and start Nginx in foreground
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
