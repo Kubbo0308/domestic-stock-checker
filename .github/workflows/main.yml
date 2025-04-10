@@ -23,12 +23,12 @@ env:
 
   ARTIFACT_REPO: ${{ secrets.ARTIFACT_REPO }}
 
-  ROOT_PATH_API: ./backend
-  ROOT_PATH_WEB: ./frontend
+  ROOT_PATH_BACKEND: ./backend
+  ROOT_PATH_FRONTEND: ./frontend
   ROOT_PATH_IAC_APPLICATION: ./terraform/application
 
-  IMAGE_SUFFIX_API: api
-  IMAGE_SUFFIX_WEB: web
+  IMAGE_SUFFIX_BACKEND: backend
+  IMAGE_SUFFIX_FRONTEND: frontend
 
   API_URL: "http://localhost:8080"
 
@@ -62,8 +62,8 @@ jobs:
       - name: Handle Docker Image for API
         uses: ./.github/actions/docker-image-handler
         with:
-          context: "${{ env.ROOT_PATH_API }}"
-          image_suffix: "${{ env.IMAGE_SUFFIX_API }}"
+          context: "${{ env.ROOT_PATH_BACKEND }}"
+          image_suffix: "${{ env.IMAGE_SUFFIX_BACKEND }}"
           build_args: ""
 
   build-web:
@@ -96,8 +96,8 @@ jobs:
       - name: Handle Docker Image for Web
         uses: ./.github/actions/docker-image-handler
         with:
-          context: "${{ env.ROOT_PATH_WEB }}"
-          image_suffix: "${{ env.IMAGE_SUFFIX_WEB }}"
+          context: "${{ env.ROOT_PATH_FRONTEND }}"
+          image_suffix: "${{ env.IMAGE_SUFFIX_FRONTEND }}"
           build_args: |
             NEXT_PUBLIC_API_URL=${{ env.API_URL }}
 
@@ -161,7 +161,7 @@ jobs:
       - name: Get Latest Image Tag of Github SHA
         id: get_sha
         run: |
-          github_sha_latest_text=$(gcloud artifacts docker images list ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }} --limit=1 --include-tags --filter="tags[]=latest" --format="json" | jq -r '.[0].tags[0]')
+          github_sha_latest_text=$(gcloud artifacts docker images list ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_FRONTEND }} --limit=1 --include-tags --filter="tags[]=latest" --format="json" | jq -r '.[0].tags[0]')
           if [ -z "$github_sha_latest_text" ]; then
             echo "No Latest image found."
             exit 1
@@ -181,8 +181,8 @@ jobs:
         run: terraform plan -no-color -lock=false
         continue-on-error: true
         env:
-          TF_VAR_docker_image_api: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_API }}:${{ env.github_sha_latest }}"
-          TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_api: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_BACKEND }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_FRONTEND }}:${{ env.github_sha_latest }}"
           TF_VAR_region: ${{ env.REGION }}
           TF_VAR_service_account: ${{ env.OPERATION_ACCOUNT_EMAIL }}
       - id: "pull-request-comment"
@@ -246,7 +246,7 @@ jobs:
       - name: Get Latest Image Tag of Github SHA
         id: get_sha
         run: |
-          github_sha_latest_text=$(gcloud artifacts docker images list ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }} --limit=1 --include-tags --filter="tags[]=latest" --format="json" | jq -r '.[0].tags[0]')
+          github_sha_latest_text=$(gcloud artifacts docker images list ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_FRONTEND }} --limit=1 --include-tags --filter="tags[]=latest" --format="json" | jq -r '.[0].tags[0]')
           if [ -z "$github_sha_latest_text" ]; then
             echo "No Latest image found."
             exit 1
@@ -266,8 +266,8 @@ jobs:
         run: terraform plan -no-color -lock=false
         continue-on-error: true
         env:
-          TF_VAR_docker_image_api: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_API }}:${{ env.github_sha_latest }}"
-          TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_api: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_BACKEND }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_FRONTEND }}:${{ env.github_sha_latest }}"
           TF_VAR_region: ${{ env.REGION }}
           TF_VAR_service_account: ${{ env.OPERATION_ACCOUNT_EMAIL }}
       - id: apply
@@ -276,7 +276,7 @@ jobs:
         run: terraform apply -auto-approve -lock=false
         continue-on-error: true
         env:
-          TF_VAR_docker_image_api: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_API }}:${{ env.github_sha_latest }}"
-          TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_api: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_BACKEND }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_FRONTEND }}:${{ env.github_sha_latest }}"
           TF_VAR_region: ${{ env.REGION }}
           TF_VAR_service_account: ${{ env.OPERATION_ACCOUNT_EMAIL }}

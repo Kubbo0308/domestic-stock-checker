@@ -1,8 +1,8 @@
-variable "docker_image_api" {
+variable "docker_image_backend" {
   type = string
 }
 
-variable "docker_image_web" {
+variable "docker_image_frontend" {
   type = string
 }
 

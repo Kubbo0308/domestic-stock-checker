@@ -17,11 +17,11 @@ resource "google_cloud_run_v2_service" "my-service" {
 
   template {
     containers {
-      name       = "web"
-      image      = var.docker_image_web
+      name       = "frontend"
+      image      = var.docker_image_frontend
       depends_on = ["app"]
       ports {
-        container_port = 3000
+        container_port = 80
       }
       startup_probe {
         timeout_seconds = 120
@@ -33,8 +33,8 @@ resource "google_cloud_run_v2_service" "my-service" {
     }
 
     containers {
-      name  = "app"
-      image = var.docker_image_api
+      name  = "backend"
+      image = var.docker_image_backend
       startup_probe {
         timeout_seconds = 120
         period_seconds  = 10

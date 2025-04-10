@@ -12,8 +12,8 @@ env:
   ARTIFACT_REPO: ${{ secrets.ARTIFACT_REPO }}
 
   ROOT_PATH_IAC_APPLICATION: ./terraform/application
-  IMAGE_SUFFIX_API: api
-  IMAGE_SUFFIX_WEB: web
+  IMAGE_SUFFIX_FRONTEND: frontend
+  IMAGE_SUFFIX_BACKEND: backend
 
 jobs:
   terraform:
@@ -37,7 +37,7 @@ jobs:
       - name: Get Latest Image Tag of Github SHA
         id: get_sha
         run: |
-          github_sha_latest_text=$(gcloud artifacts docker images list ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }} --limit=1 --include-tags --filter="tags[]=latest" --format="json" | jq -r '.[0].tags[0]')
+          github_sha_latest_text=$(gcloud artifacts docker images list ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_BACKEND }} --limit=1 --include-tags --filter="tags[]=latest" --format="json" | jq -r '.[0].tags[0]')
           if [ -z "$github_sha_latest_text" ]; then
             echo "No Latest image found."
             exit 1
@@ -56,8 +56,8 @@ jobs:
         working-directory: "${{ env.ROOT_PATH_IAC_APPLICATION }}"
         run: terraform plan -no-color -lock=false -destroy
         env:
-          TF_VAR_docker_image_api: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_API }}:${{ env.github_sha_latest }}"
-          TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_backend: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_FRONTEND }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_frontend: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_BACKEND }}:${{ env.github_sha_latest }}"
           TF_VAR_region: ${{ env.REGION }}
           TF_VAR_service_account: ${{ env.OPERATION_ACCOUNT_EMAIL }}
       - id: Destroy
@@ -65,7 +65,7 @@ jobs:
         working-directory: "${{ env.ROOT_PATH_IAC_APPLICATION }}"
         run: terraform destroy -auto-approve
         env:
-          TF_VAR_docker_image_api: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_API }}:${{ env.github_sha_latest }}"
-          TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_backend: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_FRONTEND }}:${{ env.github_sha_latest }}"
+          TF_VAR_docker_image_frontend: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_BACKEND }}:${{ env.github_sha_latest }}"
           TF_VAR_region: ${{ env.REGION }}
           TF_VAR_service_account: ${{ env.OPERATION_ACCOUNT_EMAIL }}
