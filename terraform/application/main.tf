@@ -21,7 +21,7 @@ resource "google_cloud_run_v2_service" "my-service" {
       image      = var.docker_image_web
       depends_on = ["app"]
       ports {
-        container_port = 3000
+        container_port = 80
       }
       startup_probe {
         timeout_seconds = 120
