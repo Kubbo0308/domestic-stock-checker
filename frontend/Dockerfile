@@ -36,6 +36,7 @@ WORKDIR /app
 
 # Install dependencies (optionally add --production to skip devDependencies if build tools are in prod deps)
 COPY package.json bun.lock ./
+RUN bun --version
 # use --production if possible to avoid dev-only deps&#8203;:contentReference[oaicite:2]{index=2}
 RUN bun install --production --no-frozen-lockfile
 
