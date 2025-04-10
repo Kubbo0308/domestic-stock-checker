@@ -31,14 +31,13 @@ CMD ["bun", "run", "dev"]
 #####################################
 # build stage
 #####################################
-FROM oven/bun:1.0.0 AS builder
+FROM oven/bun:1.2.2 AS builder
 WORKDIR /app
 
 # Install dependencies (optionally add --production to skip devDependencies if build tools are in prod deps)
 COPY package.json bun.lock ./
-RUN bun --version
 # use --production if possible to avoid dev-only deps&#8203;:contentReference[oaicite:2]{index=2}
-RUN bun install --production --no-frozen-lockfile
+RUN bun install --production
 
 # Copy source and build the app
 COPY . .
