@@ -50,10 +50,10 @@ RUN bun run build
 # runner stage
 #####################################
 FROM nginx:alpine AS runner
+# 環境変数展開用に envsubst をインストール
+RUN apk add --no-cache gettext
 # Copy build output to nginx's web root
 COPY --from=builder /app/dist /usr/share/nginx/html
-# Copy a custom nginx config to handle SPA routing
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-# Expose port 80 and start Nginx in foreground
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+ENV PORT=80
+CMD ["/bin/sh", "-c", "envsubst < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
