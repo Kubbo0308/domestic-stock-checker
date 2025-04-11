@@ -27,7 +27,7 @@ resource "google_cloud_run_v2_service" "my-service" {
         timeout_seconds = 120
         period_seconds  = 10
         tcp_socket {
-          port = 3000
+          port = 80
         }
       }
     }
