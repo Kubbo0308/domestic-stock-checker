@@ -56,5 +56,4 @@ RUN apk add --no-cache gettext
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 RUN apk add --no-cache net-tools && netstat -tuln
-CMD ["/bin/sh", "-c", "envsubst '${PORT}' < /etc/nginx/templates/default.conf.template > /tmp/debug.conf && cat /tmp/debug.conf && sleep 3600"]
-
+CMD ["/bin/sh", "-c", "envsubst '${PORT}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
