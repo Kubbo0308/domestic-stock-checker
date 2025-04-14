@@ -139,6 +139,12 @@ resource "google_project_iam_member" "build_af_read_create" {
   member  = "serviceAccount:${google_service_account.build_account.email}"
 }
 
+# ✅ Cloud Run のカスタムドメインマッピングを作成するために、operationアカウントに roles/run.admin を付与
+resource "google_project_iam_member" "operation_account_run_admin" {
+  project = var.project_id
+  role    = "roles/run.admin"
+  member  = "serviceAccount:${google_service_account.operation_account.email}"
+}
 
 output "GCP_PROJECT_ID" {
   value       = var.project_id
