@@ -59,3 +59,16 @@ resource "google_cloud_run_v2_service_iam_binding" "my-service-invoker-binding" 
     "allUsers",
   ]
 }
+
+resource "google_cloud_run_domain_mapping" "custom_domain" {
+  location = var.region
+  name     = var.custom_domain
+
+  metadata {
+    namespace = var.project_id
+  }
+
+  spec {
+    route_name = google_cloud_run_v2_service.my-service.name
+  }
+}

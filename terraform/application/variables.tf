@@ -13,3 +13,11 @@ variable "region" {
 variable "service_account" {
   type = string
 }
+
+variable "custom_domain" {
+  type        = string
+}
+
+variable "project_id" {
+  type        = string
+}
