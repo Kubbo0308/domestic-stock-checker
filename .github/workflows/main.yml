@@ -20,7 +20,6 @@ env:
   BUILD_ACCOUNT_EMAIL: ${{ secrets.BUILD_ACCOUNT }}
   OPERATION_ACCOUNT_EMAIL: ${{ secrets.OPERATION_ACCOUNT }}
   WORKLOAD_IDENTITY_PROVIDER_NAME: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-  CUSTOM_DOMAIN: "domestic-stock-checker.com"
 
   ARTIFACT_REPO: ${{ secrets.ARTIFACT_REPO }}
 
@@ -186,8 +185,6 @@ jobs:
           TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }}:${{ env.github_sha_latest }}"
           TF_VAR_region: ${{ env.REGION }}
           TF_VAR_service_account: ${{ env.OPERATION_ACCOUNT_EMAIL }}
-          TF_VAR_custom_domain: ${{ env.CUSTOM_DOMAIN }}
-          TF_VAR_project_id: ${{ env.PROJECT_ID }}
       - id: "pull-request-comment"
         name: Create Pull Request Comment
         uses: actions/github-script@v7
@@ -273,8 +270,6 @@ jobs:
           TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }}:${{ env.github_sha_latest }}"
           TF_VAR_region: ${{ env.REGION }}
           TF_VAR_service_account: ${{ env.OPERATION_ACCOUNT_EMAIL }}
-          TF_VAR_custom_domain: ${{ env.CUSTOM_DOMAIN }}
-          TF_VAR_project_id: ${{ env.PROJECT_ID }}
       - id: apply
         name: Terraform Apply
         working-directory: "${{ env.ROOT_PATH_IAC_APPLICATION }}"
@@ -285,5 +280,3 @@ jobs:
           TF_VAR_docker_image_web: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_SUFFIX_WEB }}:${{ env.github_sha_latest }}"
           TF_VAR_region: ${{ env.REGION }}
           TF_VAR_service_account: ${{ env.OPERATION_ACCOUNT_EMAIL }}
-          TF_VAR_custom_domain: ${{ env.CUSTOM_DOMAIN }}
-          TF_VAR_project_id: ${{ env.PROJECT_ID }}
