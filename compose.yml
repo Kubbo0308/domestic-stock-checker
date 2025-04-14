@@ -33,10 +33,6 @@ services:
       TZ: Asia/Tokyo
       BACKEND_ENDPOINT_URL: ${BACKEND_ENDPOINT_URL:-http://localhost:8080}
       ENV: ${ENV}
-      VITE_GITHUB_URL: ${VITE_GITHUB_URL}
-      VITE_X_URL: ${VITE_X_URL}
-      VITE_GMAIL_ADDRESS: ${VITE_GMAIL_ADDRESS}
-      VITE_IR_BANK_URL: ${VITE_IR_BANK_URL}
 
 volumes:
   node_modules:

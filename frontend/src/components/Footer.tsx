@@ -3,6 +3,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { IoIosMail } from "react-icons/io";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { SOCIAL_ACCOUNT } from "@/const";
 
 const Footer = () => {
   return (
@@ -50,21 +51,24 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">連絡先</h3>
             <div className="flex space-x-4">
               <a
-                href={import.meta.env.VITE_GITHUB_URL}
+                href={SOCIAL_ACCOUNT.GITHUB_URL}
+                target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="GitHub"
               >
                 <FaGithub size={20} />
               </a>
               <a
-                href={import.meta.env.VITE_X_URL}
+                href={SOCIAL_ACCOUNT.X_URL}
+                target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="Twitter"
               >
                 <FaXTwitter size={20} />
               </a>
               <a
-                href={import.meta.env.VITE_GMAIL_ADDRESS}
+                href={SOCIAL_ACCOUNT.GMAIL_ADDRESS}
+                target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors"
                 aria-label="Email"
               >
