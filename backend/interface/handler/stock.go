@@ -27,7 +27,11 @@ func (sh *stockHandler) GetStockInfo(c *gin.Context) {
 	}
 	settlementLink, companyName, profit, operatingProfitRate, totalAsset, eps, capitalAdequacyRatio, salesCashFlow, cashEtc, oneStockDividend, dividendPayoutRatio, profitScore, operatingProfitRateScore, totalAssetScore, epsScore, capitalAdequacyRatioScore, salesCashFlowScore, cashEtcScore, oneStockDividendScore, dividendPayoutRatioScore, err := sh.su.GetStockInfo(securitiesCode)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		if err.Error() == "not found" {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Company not found"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
