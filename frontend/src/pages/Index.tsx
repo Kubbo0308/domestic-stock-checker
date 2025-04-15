@@ -11,6 +11,7 @@ import { CompanyData } from "@/domain.types";
 import LoadingDialog from "@/components/LoadingDialog";
 import ErrorDialog from "@/components/ErrorDialog";
 import Header from "@/components/Header";
+import { cn } from "@/lib/utils";
 
 interface ErrorState {
   title: string;
@@ -22,7 +23,21 @@ const Index = () => {
   const [companyData, setCompanyData] = useState<CompanyData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ErrorState | null>(null);
+  const [inputError, setInputError] = useState<string | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    
+    if (value.length > 4) {
+      setInputError("証券番号を入力してください");
+    } else {
+      setInputError(null);
+    }
+  };
+
+  const isSearchDisabled = searchTerm.length === 0 || searchTerm.length > 4;
 
   const handleSearch = async () => {
     // 既存のリクエストをキャンセル
@@ -94,14 +109,20 @@ const Index = () => {
               <Input
                 placeholder="証券番号を入力"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="text-lg"
+                onChange={handleSearchChange}
+                className={cn(
+                  "text-lg",
+                  inputError && "border-destructive border-2"
+                )}
               />
-              <Button onClick={handleSearch} size="lg">
+              <Button onClick={handleSearch} size="lg" disabled={isSearchDisabled}>
                 <IoSearchSharp />
                 チェック
               </Button>
             </div>
+            {inputError && (
+              <p className="text-destructive text-sm">{inputError}</p>
+            )}
           </Card>
 
           {companyData && (
