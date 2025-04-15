@@ -11,6 +11,7 @@ import { CompanyData } from "@/domain.types";
 import LoadingDialog from "@/components/LoadingDialog";
 import ErrorDialog from "@/components/ErrorDialog";
 import Header from "@/components/Header";
+import { cn } from "@/lib/utils";
 
 interface ErrorState {
   title: string;
@@ -22,7 +23,21 @@ const Index = () => {
   const [companyData, setCompanyData] = useState<CompanyData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ErrorState | null>(null);
+  const [inputError, setInputError] = useState<string | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    
+    if (value.length > 4) {
+      setInputError("証券番号を入力してください");
+    } else {
+      setInputError(null);
+    }
+  };
+
+  const isSearchDisabled = searchTerm.length === 0 || searchTerm.length > 4;
 
   const handleSearch = async () => {
     // 既存のリクエストをキャンセル
@@ -48,24 +63,33 @@ const Index = () => {
           setCompanyData(data);
           setIsLoading(false);
           break;
+        case 404:
+          setError({
+            title: "あれれ？企業が見つかりません… 😰",
+            description: "証券コードが間違ってるかも？ もう一度チェックしてみてください！",
+          });
+          setIsLoading(false);
+          break;
         case 500:
           setError({
-            title: "サーバーエラーが発生しました",
-            description: "申し訳ありません。時間を置いて再度お試しください。",
+            title: "サーバーがちょっと休憩中みたいです 🛠️",
+            description: "時間をおいてから、もう一度ためしてみてくださいね。",
           });
           setIsLoading(false);
           break;
         default:
           setError({
-            title: "エラーが発生しました",
-            description: "再度お試しください。",
+            title: "なんだか変なことが起きました 🌀",
+            description: "もう一回やってみてください。それでもダメなら、お知らせいただけると助かります！",
           });
+          setIsLoading(false);
+          break;
       }
     } catch (error: unknown) {
       if (error instanceof Error && error.name !== "AbortError") {
         setError({
-          title: "エラーが発生しました",
-          description: "再度お試しください。",
+          title: "ネットワークエラーかも？ 📡",
+          description: "インターネットの接続を確認して、もう一度お試しくださいっ！",
         });
       }
     } finally {
@@ -94,14 +118,20 @@ const Index = () => {
               <Input
                 placeholder="証券番号を入力"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="text-lg"
+                onChange={handleSearchChange}
+                className={cn(
+                  "text-lg",
+                  inputError && "border-destructive border-2"
+                )}
               />
-              <Button onClick={handleSearch} size="lg">
+              <Button onClick={handleSearch} size="lg" disabled={isSearchDisabled}>
                 <IoSearchSharp />
                 チェック
               </Button>
             </div>
+            {inputError && (
+              <p className="text-destructive text-sm">{inputError}</p>
+            )}
           </Card>
 
           {companyData && (

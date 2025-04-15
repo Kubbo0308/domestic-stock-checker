@@ -5,6 +5,7 @@ import (
 	"domestic-stock-checker/utils"
 	"fmt"
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/gocolly/colly/v2"
@@ -43,7 +44,12 @@ func (sp *stockPersistence) FetchStockInfo(secuririesCode string) (string, strin
 
 	// エラーハンドラ
 	c.OnError(func(r *colly.Response, err error) {
-		log.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+		log.Println("Request URL:", r.Request.URL, "failed with response code:", r.StatusCode)
+
+		// 404ならエラーとして返す
+		if r.StatusCode == http.StatusNotFound {
+			err = fmt.Errorf("not found")
+		}
 	})
 
 	var companyName string
