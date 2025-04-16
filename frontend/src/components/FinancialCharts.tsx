@@ -29,7 +29,17 @@ const FinancialCharts = ({ company }: { company: CompanyData }) => {
   const oneStockDividend = getChartData(company.OneStockDividend);
   const dividendPayoutRatio = getChartData(company.DividendPayoutRatio);
 
-  if (profit.chartData.length === 0) {
+  if (
+    profit.chartData.length === 0 &&
+    operatingProfitRate.chartData.length === 0 &&
+    totalAsset.chartData.length === 0 &&
+    eps.chartData.length === 0 &&
+    capitalAdequacyRatio.chartData.length === 0 &&
+    salesCashFlow.chartData.length === 0 &&
+    cashEtc.chartData.length === 0 &&
+    oneStockDividend.chartData.length === 0 &&
+    dividendPayoutRatio.chartData.length === 0
+  ) {
     return (
       <Card className="p-6 backdrop-blur-sm bg-white/50">
         <h2 className="text-2xl font-bold mb-4">財務推移</h2>
@@ -47,27 +57,53 @@ const FinancialCharts = ({ company }: { company: CompanyData }) => {
       <Card className="p-6 backdrop-blur-sm bg-white/50">
         <h2 className="text-2xl font-bold mb-4">財務推移</h2>
         <div className="space-y-8">
-          <Chart title={profit.title} data={profit.chartData} />
-          <Chart
-            title={operatingProfitRate.title}
-            data={operatingProfitRate.chartData}
-          />
-          <Chart title={totalAsset.title} data={totalAsset.chartData} />
-          <Chart title={eps.title} data={eps.chartData} />
-          <Chart
-            title={capitalAdequacyRatio.title}
-            data={capitalAdequacyRatio.chartData}
-          />
-          <Chart title={salesCashFlow.title} data={salesCashFlow.chartData} />
-          <Chart title={cashEtc.title} data={cashEtc.chartData} />
-          <Chart
-            title={oneStockDividend.title}
-            data={oneStockDividend.chartData}
-          />
-          <Chart
-            title={dividendPayoutRatio.title}
-            data={dividendPayoutRatio.chartData}
-          />
+          {profit.chartData.length > 0 && (
+            <Chart title={profit.title} data={profit.chartData} />
+          )}
+
+          {operatingProfitRate.chartData.length > 0 && (
+            <Chart
+              title={operatingProfitRate.title}
+              data={operatingProfitRate.chartData}
+            />
+          )}
+
+          {totalAsset.chartData.length > 0 && (
+            <Chart title={totalAsset.title} data={totalAsset.chartData} />
+          )}
+
+          {eps.chartData.length > 0 && (
+            <Chart title={eps.title} data={eps.chartData} />
+          )}
+
+          {capitalAdequacyRatio.chartData.length > 0 && (
+            <Chart
+              title={capitalAdequacyRatio.title}
+              data={capitalAdequacyRatio.chartData}
+            />
+          )}
+
+          {salesCashFlow.chartData.length > 0 && (
+            <Chart title={salesCashFlow.title} data={salesCashFlow.chartData} />
+          )}
+
+          {cashEtc.chartData.length > 0 && (
+            <Chart title={cashEtc.title} data={cashEtc.chartData} />
+          )}
+
+          {oneStockDividend.chartData.length > 0 && (
+            <Chart
+              title={oneStockDividend.title}
+              data={oneStockDividend.chartData}
+            />
+          )}
+
+          {dividendPayoutRatio.chartData.length > 0 && (
+            <Chart
+              title={dividendPayoutRatio.title}
+              data={dividendPayoutRatio.chartData}
+            />
+          )}
         </div>
       </Card>
     </motion.div>
