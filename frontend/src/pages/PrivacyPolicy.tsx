@@ -102,10 +102,7 @@ const PrivacyPolicy = () => {
                 </p>
               </section>
 
-              <p className="mt-8 text-sm">
-                最終更新日：{new Date().getFullYear()}年
-                {new Date().getMonth() + 1}月{new Date().getDate()}日
-              </p>
+              <p className="mt-8 text-sm">最終更新日：2025年4月16日</p>
             </div>
           </Card>
 

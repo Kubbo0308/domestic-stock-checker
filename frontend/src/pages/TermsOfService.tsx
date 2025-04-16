@@ -32,7 +32,7 @@ const TermsOfService = () => {
                 </h2>
                 <p>
                   当サービスは、企業の財務データを分析し、投資判断に役立つ情報を提供するウェブアプリケーションです。
-                  ユーザーは企業名や証券コードを入力することで、財務データの健全性を確認することができます。
+                  ユーザーは証券コードを入力することで、財務データの健全性を確認することができます。
                 </p>
               </section>
 
@@ -112,10 +112,7 @@ const TermsOfService = () => {
                 </p>
               </section>
 
-              <p className="mt-8 text-sm">
-                最終更新日：{new Date().getFullYear()}年
-                {new Date().getMonth() + 1}月{new Date().getDate()}日
-              </p>
+              <p className="mt-8 text-sm">最終更新日：2025年4月16日</p>
             </div>
           </Card>
 

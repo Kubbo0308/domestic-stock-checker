@@ -31,10 +31,8 @@ const UsageGuide = () => {
               <section>
                 <h2 className="text-2xl font-semibold mb-3">基本的な使い方</h2>
                 <ol className="list-decimal list-inside space-y-2 text-gray-700">
-                  <li>
-                    トップページの検索ボックスに企業名または証券コードを入力します。
-                  </li>
-                  <li>「検索」ボタンをクリックします。</li>
+                  <li>トップページの検索ボックスに証券コードを入力します。</li>
+                  <li>「チェック」ボタンをクリックします。</li>
                   <li>
                     企業の基本情報、健康度スコア、財務チャートが表示されます。
                   </li>
@@ -76,7 +74,6 @@ const UsageGuide = () => {
                 </h2>
                 <p className="text-gray-700">
                   財務チャートでは、企業の収益推移を確認できます。
-                  上昇トレンドは青紫色、下降トレンドは赤色で表示されます。
                   企業の成長性や安定性を判断する材料としてご活用ください。
                 </p>
               </section>
