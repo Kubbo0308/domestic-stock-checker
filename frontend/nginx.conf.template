@@ -8,8 +8,8 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-   location ~* \.(ico|png|jpg|jpeg|svg|gif|webp|css|js)$ {
-    try_files $uri =404;
+    location ~* \.(ico|png|jpg|jpeg|svg|gif|webp|css|js)$ {
+        try_files $uri =404;
     }
 
     location /api/ {
