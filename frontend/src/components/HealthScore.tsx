@@ -12,20 +12,15 @@ const HealthScore = ({ company }: { company: CompanyData }) => {
   };
 
   const getHealthComment = (score: number) => {
-    if (score >= 70) {
+    if (score >= 80) {
       return "非常に健全な財務状態です。継続的な成長が期待できます。";
-    } else if (score >= 40) {
-      return "おおむね健全な財務状態ですが、一部改善の余地があります。";
+    } else if (score >= 60) {
+      return "おおむね健全な財務状態ですが、投資判断はリスク許容度によります。";
     }
     return "財務状態に注意が必要です。詳細な分析をお勧めします。";
   };
 
   const score = calculateHealthScore();
-  const getScoreColor = () => {
-    if (score >= 70) return "bg-health-good";
-    if (score >= 40) return "bg-health-warning";
-    return "bg-health-bad";
-  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -44,7 +39,7 @@ const HealthScore = ({ company }: { company: CompanyData }) => {
         <h2 className="text-2xl font-bold mb-4">健康度スコア</h2>
         <div className="space-y-4">
           <div className="relative pt-4">
-            <Progress value={progress} className={getScoreColor()} />
+            <Progress value={progress} className="bg-gradient-to-b" />
             <span className="absolute right-0 top-0 text-2xl font-bold">
               {score}/100
             </span>
