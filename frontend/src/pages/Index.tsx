@@ -12,6 +12,7 @@ import LoadingDialog from "@/components/LoadingDialog";
 import ErrorDialog from "@/components/ErrorDialog";
 import Header from "@/components/Header";
 import { cn } from "@/lib/utils";
+import SEO from "@/components/SEO";
 
 interface ErrorState {
   title: string;
@@ -29,7 +30,7 @@ const Index = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    
+
     if (value.length > 4) {
       setInputError("証券番号を入力してください");
     } else {
@@ -66,7 +67,8 @@ const Index = () => {
         case 404:
           setError({
             title: "あれれ？企業が見つかりません… 😰",
-            description: "証券コードが間違ってるかも？ もう一度チェックしてみてください！",
+            description:
+              "証券コードが間違ってるかも？ もう一度チェックしてみてください！",
           });
           setIsLoading(false);
           break;
@@ -80,7 +82,8 @@ const Index = () => {
         default:
           setError({
             title: "なんだか変なことが起きました 🌀",
-            description: "もう一回やってみてください。それでもダメなら、お知らせいただけると助かります！",
+            description:
+              "もう一回やってみてください。それでもダメなら、お知らせいただけると助かります！",
           });
           setIsLoading(false);
           break;
@@ -89,7 +92,8 @@ const Index = () => {
       if (error instanceof Error && error.name !== "AbortError") {
         setError({
           title: "ネットワークエラーかも？ 📡",
-          description: "インターネットの接続を確認して、もう一度お試しくださいっ！",
+          description:
+            "インターネットの接続を確認して、もう一度お試しくださいっ！",
         });
       }
     } finally {
@@ -107,6 +111,11 @@ const Index = () => {
 
   return (
     <>
+      <SEO
+        title="企業健康度チェッカー | 財務状況を分析"
+        description="企業の財務健全性を簡単にチェック。証券番号や企業名で検索し、収益性、安定性、成長性を確認できる企業健康度分析ツール。"
+        keywords="企業健康度, 財務分析, 収益性分析, 企業評価, 証券分析"
+      />
       <Header />
       <div className="min-h-screen bg-gradient-to-b from-background to-muted p-6">
         <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
@@ -124,7 +133,11 @@ const Index = () => {
                   inputError && "border-destructive border-2"
                 )}
               />
-              <Button onClick={handleSearch} size="lg" disabled={isSearchDisabled}>
+              <Button
+                onClick={handleSearch}
+                size="lg"
+                disabled={isSearchDisabled}
+              >
                 <IoSearchSharp />
                 チェック
               </Button>
