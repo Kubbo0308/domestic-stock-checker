@@ -21,6 +21,11 @@ const HealthScore = ({ company }: { company: CompanyData }) => {
   };
 
   const score = calculateHealthScore();
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return "text-health-good";
+    if (score >= 60) return "text-health-warning";
+    return "text-health-bad";
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,7 +46,10 @@ const HealthScore = ({ company }: { company: CompanyData }) => {
           <div className="relative pt-4">
             <Progress value={progress} className="bg-gradient-to-b" />
             <span className="absolute right-0 top-0 text-2xl font-bold">
-              {score}/100
+              <span className={`text-3xl ${getScoreColor(score)}`}>
+                {score}
+              </span>
+              /100
             </span>
           </div>
           <div className="mt-4 p-4 bg-white/30 rounded-lg">
