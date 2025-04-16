@@ -8,6 +8,10 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
+    location ~* \.(ico|png|jpg|jpeg|svg|gif|webp|css|js)$ {
+        try_files $uri =404;
+    }
+
     location /api/ {
         proxy_pass http://localhost:8080/;
         proxy_set_header Host $host;
