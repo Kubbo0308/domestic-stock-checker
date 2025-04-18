@@ -1,4 +1,5 @@
 # 企業健康度チェッカー
+![checker_logo_purple_916](https://github.com/user-attachments/assets/35a3ca73-c28e-4565-9777-04a96fde14e6)
 
 企業の財務データを分析し、健全度をスコアで可視化する Web アプリケーションです。
 
@@ -24,6 +25,7 @@ make up       # 開発環境の起動
 開発環境は `http://localhost:3000` にてアクセスできます。
 
 ## 🛠️ 使用技術
+![teckstack](https://github.com/user-attachments/assets/7140825a-1a17-4835-abf6-57ba5adde5a4)
 
 - Frontend:
   - Bun
@@ -45,6 +47,8 @@ make up       # 開発環境の起動
   - Terraform
 
 ## ☁️ インフラ構成
+
+![diagram-export-2025-4-18-14_54_07](https://github.com/user-attachments/assets/63fd630d-e8a9-46e5-8138-439f179b9a2b)
 
 使用サービス
 
